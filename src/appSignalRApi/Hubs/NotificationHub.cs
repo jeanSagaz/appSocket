@@ -7,13 +7,6 @@ namespace appSignalRApi.Hubs
 {
     public class NotificationHub : Hub
     {
-        private IConnectionManager _manager;
-
-        public NotificationHub(IConnectionManager manager)
-        {
-            _manager = manager;
-        }
-
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
@@ -24,14 +17,12 @@ namespace appSignalRApi.Hubs
             return base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendMessage(string user, string message)
-        {
-            await Clients.All.SendAsync("sendMessage", user, message);
-        }
+        public string GetConnectionId() => Context.ConnectionId;
 
-        public void NewMessage(string userName, string message)
-        {
-            Clients.All.SendAsync("newMessage", userName, message);
-        }
+        public async Task SendMessage(string user, string message) => await Clients.All.SendAsync("sendMessage", user, message);
+
+        public async Task NewMessage(string userName, string message) => await Clients.All.SendAsync("newMessage", userName, message);
+
+        public async Task BroadcastToConnection(string data, string connectionId) => await Clients.Client(connectionId).SendAsync("broadcasttoclient", data);
     }
 }
