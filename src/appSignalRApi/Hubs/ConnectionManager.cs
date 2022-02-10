@@ -7,8 +7,6 @@ namespace appSignalRApi.Hubs
     {
         private static Dictionary<string, HashSet<string>> userMap = new Dictionary<string, HashSet<string>>();
 
-        //public IEnumerable<string> OnlineUsers { get { return userMap.Keys; } }
-
         public void AddConnection(string userName, string connectionId)
         {
             lock (userMap)

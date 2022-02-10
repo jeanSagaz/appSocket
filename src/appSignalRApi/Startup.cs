@@ -1,4 +1,5 @@
 using appSignalRApi.Hubs;
+using appSignalRApi.Hubs.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +30,8 @@ namespace appSignalRApi
             services.AddSignalR();
             services.AddCors();
 
-            //services.AddSingleton<IConnectionManager, ConnectionManager>();
-            //services.AddSingleton<IHubNotificationHelper, HubNotificationHelper>();
+            services.AddSingleton<IConnectionManager, ConnectionManager>();
+            services.AddSingleton<IHubNotificationHelper, HubNotificationHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,8 @@
 ﻿using appSignalRApi.Hubs.Interface;
+using appSignalRApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace appSignalRApi.Controllers
 {
@@ -9,7 +11,7 @@ namespace appSignalRApi.Controllers
     public class SignalRController : ControllerBase
     {
         private readonly ILogger<SignalRController> _logger;
-        private readonly IHubNotificationHelper _hubNotificationHelper;        
+        private readonly IHubNotificationHelper _hubNotificationHelper;
 
         public SignalRController(ILogger<SignalRController> logger,
             IHubNotificationHelper hubNotificationHelper)
@@ -19,15 +21,19 @@ namespace appSignalRApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get([FromQuery] string message)
         {
-            return Ok(_hubNotificationHelper.GetOnlineUsers());
+            await _hubNotificationHelper.SendNofificationToAll(message);
+
+            return Ok(message);
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public async Task<IActionResult> Post([FromBody] RequestBroadcastMessage model)
         {
-            return Ok(_hubNotificationHelper.GetOnlineUsers());
+            await _hubNotificationHelper.SendNofificationToAll(model.Message);
+
+            return Ok(model.Message);
         }
     }
 }

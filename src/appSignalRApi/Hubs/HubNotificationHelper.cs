@@ -53,7 +53,7 @@ namespace appSignalRApi.Hubs
 
         public async Task SendNofificationToAll(string message)
         {
-            await _hubContext.Clients.All.SendAsync(message);
+            await _hubContext.Clients.All.SendAsync("notify", message);
         }
     }
 }
