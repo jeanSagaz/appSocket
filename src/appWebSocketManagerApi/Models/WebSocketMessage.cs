@@ -2,7 +2,7 @@
 
 namespace appWebSocketManagerApi.Models
 {
-    public class WebSocketResponse
+    public class WebSocketMessage
     {
         public Guid Id { get; set; }
 

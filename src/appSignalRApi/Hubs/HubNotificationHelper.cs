@@ -8,23 +8,23 @@ namespace appSignalRApi.Hubs
     public class HubNotificationHelper : IHubNotificationHelper
     {
         IHubContext<NotificationHub> _hubContext { get;  }
-        private readonly IConnectionManager _connectionManager;
+        private readonly IHubConnectionHandler _connectionHandler;
 
         public HubNotificationHelper(IHubContext<NotificationHub> context,
-            IConnectionManager connectionManager)
+            IHubConnectionHandler connectionHandler)
         {
             _hubContext = context;
-            _connectionManager = connectionManager;
+            _connectionHandler = connectionHandler;
         }
 
-        public IEnumerable<string> GetOnlineUsers()
+        public IEnumerable<string> GetOnlineHubs()
         {
-            return _connectionManager.OnlineUsers();
+            return _connectionHandler.OnlineHubs();
         }
 
-        public async Task<Task> SendNofificationParallel(string userName)
+        public async Task<Task> SendNofificationParallel(string name)
         {
-            HashSet<string> connections = _connectionManager.GetConnections(userName);
+            HashSet<string> connections = _connectionHandler.GetConnections(name);
 
             try
             {
@@ -34,7 +34,7 @@ namespace appSignalRApi.Hubs
                     {
                         try
                         {
-                            await _hubContext.Clients.Clients(connection).SendAsync("socket", connection);
+                            await _hubContext.Clients.Clients(connection).SendAsync("notify", connection);
                         }
                         catch
                         {
@@ -51,9 +51,8 @@ namespace appSignalRApi.Hubs
             }
         }
 
-        public async Task SendNofificationToAll(string message)
-        {
-            await _hubContext.Clients.All.SendAsync("notify", message);
-        }
+        public async Task SendNofificationToAll(string message) => await _hubContext.Clients.All.SendAsync("notify", message);
+
+        public async Task SendPrivateNofification(string connectionId, string message) => await _hubContext.Clients.Client(connectionId).SendAsync("notify", message);
     }
 }

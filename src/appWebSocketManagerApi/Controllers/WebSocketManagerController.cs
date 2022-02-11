@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace appWebSocketManagerApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WebSocketManagerController : ControllerBase
     {
         private readonly ILogger<WebSocketManagerController> _logger;
@@ -24,30 +24,30 @@ namespace appWebSocketManagerApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string message)
         {
-            var response = new WebSocketResponse
+            var webSocketMessage = new WebSocketMessage
             {
                 Id = Guid.NewGuid(),
                 Value = message
             };
-            await _notificationWebSocketHandler.SendMessageBroadcastAsync(response);
+            await _notificationWebSocketHandler.SendMessageBroadcastAsync(webSocketMessage);
 
-            return Ok(response);
+            return Ok(webSocketMessage);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RequestBroadcastMessage model)
         {
-            var response = new WebSocketResponse
+            var webSocketMessage = new WebSocketMessage
             {
                 Id = Guid.NewGuid(),
                 Value = model.Message
             };
-            await _notificationWebSocketHandler.SendMessageBroadcastAsync(response);
+            await _notificationWebSocketHandler.SendMessageBroadcastAsync(webSocketMessage);
 
-            return Ok(response);
+            return Ok(webSocketMessage);
         }
 
-        [HttpPost("private")]
+        [HttpPost("private-message")]
         public async Task<IActionResult> PrivateMessage([FromBody] RequestPrivateMessage model)
         {
             await _notificationWebSocketHandler.SendPrivateMessageAsync(model.SocketId, model.Message);

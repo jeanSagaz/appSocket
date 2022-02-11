@@ -30,7 +30,7 @@ namespace appSignalRApi
             services.AddSignalR();
             services.AddCors();
 
-            services.AddSingleton<IConnectionManager, ConnectionManager>();
+            services.AddSingleton<IHubConnectionHandler, HubConnectionHandler>();
             services.AddSingleton<IHubNotificationHelper, HubNotificationHelper>();
         }
 

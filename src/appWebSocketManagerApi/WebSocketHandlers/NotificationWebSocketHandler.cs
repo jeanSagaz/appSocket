@@ -12,7 +12,7 @@ namespace appWebSocketManagerApi.WebSocketHandlers
         {
         }
 
-        public async Task SendMessageBroadcastAsync(WebSocketResponse response)
+        public async Task SendMessageBroadcastAsync(WebSocketMessage response)
         {
             await InvokeClientMethodToAllAsync("webSocketMessage", response);
         }

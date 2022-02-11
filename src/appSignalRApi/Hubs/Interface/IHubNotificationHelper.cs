@@ -7,8 +7,10 @@ namespace appSignalRApi.Hubs.Interface
     {
         Task SendNofificationToAll(string message);
 
-        IEnumerable<string> GetOnlineUsers();
+        IEnumerable<string> GetOnlineHubs();
 
         Task<Task> SendNofificationParallel(string userName);
+
+        Task SendPrivateNofification(string connectionId, string message);
     }
 }

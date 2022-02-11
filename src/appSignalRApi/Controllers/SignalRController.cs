@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace appSignalRApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SignalRController : ControllerBase
     {
         private readonly ILogger<SignalRController> _logger;
@@ -21,11 +21,9 @@ namespace appSignalRApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string message)
+        public IActionResult Get()
         {
-            await _hubNotificationHelper.SendNofificationToAll(message);
-
-            return Ok(message);
+            return Ok(_hubNotificationHelper.GetOnlineHubs());
         }
 
         [HttpPost]
@@ -33,7 +31,15 @@ namespace appSignalRApi.Controllers
         {
             await _hubNotificationHelper.SendNofificationToAll(model.Message);
 
-            return Ok(model.Message);
+            return Ok(model);
+        }
+
+        [HttpPost("private-message")]
+        public async Task<IActionResult> PrivateMessage([FromBody] RequestPrivateMessage model)
+        {
+            await _hubNotificationHelper.SendPrivateNofification(model.ConnectionId, model.Message);
+
+            return Ok(model);
         }
     }
 }
