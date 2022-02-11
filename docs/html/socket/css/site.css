@@ -1,0 +1,85 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+.navbar-inverse {
+    background-color: #3f51b5;
+    border-color: #FFFFFF;
+}
+
+    .navbar-inverse .navbar-brand {
+        color: #FFFFFF;
+    }
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: #FFFFFF;
+    }
+
+    .navbar-inverse .btn-link {
+        color: #FFFFFF;
+    }
+
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        color: #fff;
+        background-color: transparent;
+    }
+
+.navbar-nav > li > .dropdown-menu {
+    background-color: #E0FFFF;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #6FB0D7;
+}
+
+::-webkit-input-placeholder {
+    color: red;
+    font-weight: 800;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: red;
+    font-weight: 800;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: red;
+    font-weight: 800;
+}
+
+:-ms-input-placeholder {
+    color: red;
+    font-weight: 800;
+}
