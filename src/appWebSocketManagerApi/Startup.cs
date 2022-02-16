@@ -1,4 +1,5 @@
 using appWebSocketManagerApi.WebSocketHandlers;
+using appWebSocketManagerApi.WebSocketHandlers.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,14 +27,16 @@ namespace appWebSocketManagerApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // WebSocket
-            services.AddWebSocketManager();
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "appWebSocketManagerApi", Version = "v1" });
             });
+
+            // WebSocket
+            services.AddWebSocketManager();
+
+            services.AddSingleton<IWebSocketManagement, WebSocketManagement>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,25 +57,25 @@ namespace appWebSocketManagerApi
             };
             app.UseWebSockets(webSocketOptions);
 
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/wss")
-                {
-                    if (context.WebSockets.IsWebSocketRequest)
-                    {
-                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await Echo(context, webSocket);
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 400;
-                    }
-                }
-                else
-                {
-                    await next();
-                }
-            });
+            //app.Use(async (context, next) =>
+            //{
+            //    if (context.Request.Path == "/wss")
+            //    {
+            //        if (context.WebSockets.IsWebSocketRequest)
+            //        {
+            //            WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            //            await Echo(context, webSocket);
+            //        }
+            //        else
+            //        {
+            //            context.Response.StatusCode = 400;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        await next();
+            //    }
+            //});
 
             app.MapWebSocketManager("/notifications", serviceProvider.GetService<NotificationWebSocketHandler>());
 

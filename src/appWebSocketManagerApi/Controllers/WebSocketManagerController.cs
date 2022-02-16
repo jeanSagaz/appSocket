@@ -1,5 +1,6 @@
 ﻿using appWebSocketManagerApi.Models;
 using appWebSocketManagerApi.WebSocketHandlers;
+using appWebSocketManagerApi.WebSocketHandlers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,26 +13,22 @@ namespace appWebSocketManagerApi.Controllers
     public class WebSocketManagerController : ControllerBase
     {
         private readonly ILogger<WebSocketManagerController> _logger;
+        private readonly IWebSocketManagement _webSocketManagement;
         private readonly NotificationWebSocketHandler _notificationWebSocketHandler;
 
         public WebSocketManagerController(ILogger<WebSocketManagerController> logger,
+            IWebSocketManagement webSocketManagement,
             NotificationWebSocketHandler notificationWebSocketHandler)
         {
             _logger = logger;
+            _webSocketManagement = webSocketManagement;
             _notificationWebSocketHandler = notificationWebSocketHandler;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string message)
+        public IActionResult Get()
         {
-            var webSocketMessage = new WebSocketMessage
-            {
-                Id = Guid.NewGuid(),
-                Value = message
-            };
-            await _notificationWebSocketHandler.SendMessageBroadcastAsync(webSocketMessage);
-
-            return Ok(webSocketMessage);
+            return Ok(_webSocketManagement.OnlineWebSockets());
         }
 
         [HttpPost]

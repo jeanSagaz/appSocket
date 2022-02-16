@@ -30,8 +30,8 @@
                 crossorigin="anonymous"
                 integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
         </script>		
-		<!-- <script src="js/webSocketManager-git.js" asp-append-version="true"></script> -->
-		<script src="js/webSocketManager.js" asp-append-version="true"></script>
+		<script src="js/websocketmanager-git.js" asp-append-version="true"></script>
+		<!-- <script src="js/websocketmanager.js" asp-append-version="true"></script> -->
 		<script src="js/app.js" asp-append-version="true"></script>    
 	</body>
 </html>

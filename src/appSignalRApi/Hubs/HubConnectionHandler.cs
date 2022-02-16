@@ -1,4 +1,4 @@
-﻿using appSignalRApi.Hubs.Interface;
+﻿using appSignalRApi.Hubs.Interfaces;
 using System.Collections.Generic;
 
 namespace appSignalRApi.Hubs

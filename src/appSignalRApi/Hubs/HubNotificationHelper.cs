@@ -1,4 +1,4 @@
-﻿using appSignalRApi.Hubs.Interface;
+﻿using appSignalRApi.Hubs.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;

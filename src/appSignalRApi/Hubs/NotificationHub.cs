@@ -1,6 +1,7 @@
-﻿using appSignalRApi.Hubs.Interface;
+﻿using appSignalRApi.Hubs.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace appSignalRApi.Hubs
@@ -8,10 +9,14 @@ namespace appSignalRApi.Hubs
     public class NotificationHub : Hub
     {
         private readonly IHubConnectionHandler _hubConnectionHandler;
+        private readonly List<Message> _messages;
 
         public NotificationHub(IHubConnectionHandler hubConnectionHandler)
         {
             _hubConnectionHandler = hubConnectionHandler;
+
+            if (_messages is null)
+                _messages = new List<Message>();
         }
 
         public override Task OnConnectedAsync()
@@ -28,12 +33,26 @@ namespace appSignalRApi.Hubs
 
         public string GetConnectionId() => Context.ConnectionId;
 
-        //public async Task SendNotify(string message) => await Clients.All.SendAsync("notify", message);
+        public async Task NewMessage(string userName, string text)
+        {
+            await Clients.All.SendAsync("newMessage", userName, text);
+            _messages.Add(new Message() 
+            {
+                UserName = userName,
+                Text = text
+            });
+        }
 
-        //public async Task SendMessage(string user, string message) => await Clients.All.SendAsync("notify", user, message);
+        public async Task NewUser(string userName, string connectionId)
+        {
+            await Clients.Client(connectionId).SendAsync("previousMessage", _messages);
+            await Clients.All.SendAsync("newUser", userName);
+        }
+    }
 
-        //public async Task NewMessage(string userName, string message) => await Clients.All.SendAsync("notify", userName, message);
-
-        //public async Task BroadcastToConnection(string data, string connectionId) => await Clients.Client(connectionId).SendAsync("broadcasttoclient", data);
+    public class Message
+    {
+        public string UserName { get; set; }
+        public string Text { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace appSignalRApi.Hubs.Interface
+namespace appSignalRApi.Hubs.Interfaces
 {
     public interface IHubNotificationHelper
     {

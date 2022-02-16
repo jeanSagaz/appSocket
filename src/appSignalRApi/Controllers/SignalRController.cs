@@ -1,4 +1,4 @@
-﻿using appSignalRApi.Hubs.Interface;
+﻿using appSignalRApi.Hubs.Interfaces;
 using appSignalRApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

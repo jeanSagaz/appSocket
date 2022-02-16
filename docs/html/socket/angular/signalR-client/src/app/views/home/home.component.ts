@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NameDialogComponent } from 'src/app/shared/name-dialog/name-dialog.component';
 
 interface Message {
   userName: string;
@@ -17,11 +20,35 @@ export class HomeComponent implements OnInit {
   messages: Message[] = [];
   connectionId : string = '';
   messageControl = new FormControl('');
-  userName: string = '';
+  userName!: string;
 
-  constructor() {
-    this.startConnection();
-   }
+  constructor(public dialog: MatDialog,
+    public snackBar: MatSnackBar) {
+    this.openDialog();    
+  }
+
+  openMatSnackBar(userName: string) {
+    const message = userName == this.userName ? 'Você entrou na sala' : `${userName} acabou de entrar`;
+    this.snackBar.open(message, 'Fechar', {
+      duration: 5000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    })
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(NameDialogComponent, {
+      width: '250px',
+      data: this.userName,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.userName = result;
+      this.startConnection();
+      this.openMatSnackBar(result);
+    });
+  }
 
   ngOnInit(): void {
   }
@@ -38,24 +65,29 @@ export class HomeComponent implements OnInit {
         text: message,
         userName: userName
       });
+    });
 
-      console.log('entrou');
+    this._hubConnection.on("newUser", (userName: string) => {
+      this.openMatSnackBar(userName);
+    });
 
-      //this._hubConnection.start();
-
-      //console.log('connection', this.connection);      
+    this._hubConnection.on("previousMessage", (messages: Message[]) => {
+      this.messages = messages;
     });
 
     this._hubConnection.start()
-      .then(() => console.log('connection started'))
+      .then(() => { 
+        console.log('connection started');
+        //this._hubConnection.send("newUser", this.userName, this.connectionId);        
+      })
       .then(() => this.getConnectionId())
-      .catch((err) => console.log('error while establishing signalr connection: ' + err));
+      .catch((err: any) => console.log('error while establishing signalr connection: ' + err));
   }
 
   public getConnectionId = () => {
     if (this._hubConnection)
       this._hubConnection.invoke('getconnectionid').then(
-        (data) => {
+        (data: any) => {
           console.log(data);
             this.connectionId = data;
           }

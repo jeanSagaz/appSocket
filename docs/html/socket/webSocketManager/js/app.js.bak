@@ -28,6 +28,15 @@ $(document).ready(function () {
 
         setInterval(connection.start(), 3000);
     };
+	
+	// connection.invoke('GetConnectionId', (result, error) => {
+		// if (result) {
+			// console.log("The server's GetConnectionId returned: " + result);
+			// alert(result);
+			// $('#connectionid').html(result);
+		// }
+		// if (error) console.error("The server's GetConnectionId errored: " + error);
+	// });
 
     connection.clientMethods["webSocketMessage"] = (response) => {
         var html = '';
@@ -41,6 +50,7 @@ $(document).ready(function () {
             html = `<span class="label label-info">${err.message}</span>`;
         }
 
+        //$('#message').html(html);
 		li.textContent = html;
         document.getElementById("message").appendChild(li);
     };

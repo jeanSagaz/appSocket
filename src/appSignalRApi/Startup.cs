@@ -1,5 +1,5 @@
 using appSignalRApi.Hubs;
-using appSignalRApi.Hubs.Interface;
+using appSignalRApi.Hubs.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
