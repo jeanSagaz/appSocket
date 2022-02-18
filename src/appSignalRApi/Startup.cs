@@ -32,6 +32,7 @@ namespace appSignalRApi
 
             services.AddSingleton<IHubConnectionHandler, HubConnectionHandler>();
             services.AddSingleton<IHubNotificationHelper, HubNotificationHelper>();
+            services.AddSingleton<IHubNotificationQueryHelper, HubNotificationQueryHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +50,8 @@ namespace appSignalRApi
             app.UseRouting();
 
             app.UseAuthorization();
-            
+            app.UseAuthentication();
+
             app.UseCors(builder => 
             {
                 builder.WithOrigins("http://localhost:4200")
@@ -62,6 +64,7 @@ namespace appSignalRApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationHub>("/notifications");
+                endpoints.MapHub<NotificationQueryHub>("/notificationsQuery");
                 endpoints.MapControllers();
             });
         }

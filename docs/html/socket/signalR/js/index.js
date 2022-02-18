@@ -16,7 +16,7 @@ $(document).ready(function () {
             console.log(`getconnectionid: ${connectionid}`);
             console.log(`SignalR connected to ${host}`);
         } catch (err) {
-            console.log(err);
+            console.log('error', err);
             $('#statusWebSocket').addClass("label label-warning");
             $('#statusWebSocket').html('Erro ao conectar no SignalR');            
             setTimeout(start, 5000);
